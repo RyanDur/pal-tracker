@@ -22,5 +22,6 @@ repositories {
 
 dependencies {
   compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "$springBootVersion")
-  testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+  testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "$springBootVersion")
+  testCompile(group: 'org.mockito', name: 'mockito-core', version: '2.23.4')
 }

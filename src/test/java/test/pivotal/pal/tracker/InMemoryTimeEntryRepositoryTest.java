@@ -2,7 +2,7 @@ package test.pivotal.pal.tracker;
 
 import io.pivotal.pal.tracker.InMemoryTimeEntryRepository;
 import io.pivotal.pal.tracker.TimeEntry;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class InMemoryTimeEntryRepositoryTest {
+class InMemoryTimeEntryRepositoryTest {
     @Test
-    public void create() throws Exception {
+    void create() {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
 
         long projectId = 123L;
@@ -28,7 +28,7 @@ public class InMemoryTimeEntryRepositoryTest {
     }
 
     @Test
-    public void find() throws Exception {
+    void find() {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
 
         long projectId = 123L;
@@ -42,7 +42,7 @@ public class InMemoryTimeEntryRepositoryTest {
     }
 
     @Test
-    public void find_MissingEntry() {
+    void find_MissingEntry() {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
 
         long timeEntryId = 1L;
@@ -52,7 +52,7 @@ public class InMemoryTimeEntryRepositoryTest {
     }
 
     @Test
-    public void list() throws Exception {
+    void list() {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
         repo.create(new TimeEntry(123L, 456L, LocalDate.parse("2017-01-08"), 8));
         repo.create(new TimeEntry(789L, 654L, LocalDate.parse("2017-01-07"), 4));
@@ -65,7 +65,7 @@ public class InMemoryTimeEntryRepositoryTest {
     }
 
     @Test
-    public void update() throws Exception {
+    void update() {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
         TimeEntry created = repo.create(new TimeEntry(123L, 456L, LocalDate.parse("2017-01-08"), 8));
 
@@ -79,7 +79,7 @@ public class InMemoryTimeEntryRepositoryTest {
     }
 
     @Test
-    public void update_MissingEntry() {
+    void update_MissingEntry() {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
 
         TimeEntry updatedEntry = repo.update(
@@ -90,7 +90,7 @@ public class InMemoryTimeEntryRepositoryTest {
     }
 
     @Test
-    public void delete() throws Exception {
+    void delete() {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
 
         long projectId = 123L;
@@ -102,7 +102,7 @@ public class InMemoryTimeEntryRepositoryTest {
     }
 
     @Test
-    public void deleteKeepsTrackOfLatestIdProperly() {
+    void deleteKeepsTrackOfLatestIdProperly() {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
 
         long projectId = 123L;
