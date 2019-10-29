@@ -1,0 +1,25 @@
+buildscript {
+  ext {
+    springBootVersion = "2.2.0.RELEASE"
+  }
+
+  repositories {
+    mavenCentral()
+  }
+}
+
+plugins {
+  id 'java'
+  id 'org.springframework.boot' version "$springBootVersion"
+}
+
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "$springBootVersion")
+}
