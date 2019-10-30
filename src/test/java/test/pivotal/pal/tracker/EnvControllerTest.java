@@ -1,15 +1,15 @@
 package test.pivotal.pal.tracker;
 
 import io.pivotal.pal.tracker.EnvController;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EnvControllerTest {
+public class EnvControllerTest {
     @Test
-    void getEnv() throws Exception {
+    public void getEnv() throws Exception {
         EnvController controller = new EnvController(
             "8675",
             "12G",

@@ -1,10 +1,13 @@
 package test.pivotal.pal.tracker;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.pivotal.pal.tracker.TimeEntry;
 import io.pivotal.pal.tracker.TimeEntryController;
 import io.pivotal.pal.tracker.TimeEntryRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,18 +22,27 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-class TimeEntryControllerTest {
+public class TimeEntryControllerTest {
     private TimeEntryRepository timeEntryRepository;
     private TimeEntryController controller;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         timeEntryRepository = mock(TimeEntryRepository.class);
-        controller = new TimeEntryController(timeEntryRepository);
+        MeterRegistry meterRegistry = mock(MeterRegistry.class);
+
+        doReturn(mock(DistributionSummary.class))
+                .when(meterRegistry)
+                .summary("timeEntry.summary");
+
+        doReturn(mock(Counter.class))
+                .when(meterRegistry)
+                .counter("timeEntry.actionCounter");
+        controller = new TimeEntryController(timeEntryRepository, meterRegistry);
     }
 
     @Test
-    void testCreate() {
+    public void testCreate() {
         long projectId = 123L;
         long userId = 456L;
         TimeEntry timeEntryToCreate = new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8);
@@ -51,7 +63,7 @@ class TimeEntryControllerTest {
     }
 
     @Test
-    void testRead() {
+    public void testRead() {
         long timeEntryId = 1L;
         long projectId = 123L;
         long userId = 456L;
@@ -68,7 +80,7 @@ class TimeEntryControllerTest {
     }
 
     @Test
-    void testRead_NotFound() {
+    public void testRead_NotFound() {
         long nonExistentTimeEntryId = 1L;
         doReturn(null)
             .when(timeEntryRepository)
@@ -79,7 +91,7 @@ class TimeEntryControllerTest {
     }
 
     @Test
-    void testList() {
+    public void testList() {
         List<TimeEntry> expected = asList(
             new TimeEntry(1L, 123L, 456L, LocalDate.parse("2017-01-08"), 8),
             new TimeEntry(2L, 789L, 321L, LocalDate.parse("2017-01-07"), 4)
@@ -94,7 +106,7 @@ class TimeEntryControllerTest {
     }
 
     @Test
-    void testUpdate() {
+    public void testUpdate() {
         long timeEntryId = 1L;
         long projectId = 987L;
         long userId = 654L;
@@ -111,7 +123,7 @@ class TimeEntryControllerTest {
     }
 
     @Test
-    void testUpdate_NotFound() {
+    public void testUpdate_NotFound() {
         long nonExistentTimeEntryId = 1L;
         doReturn(null)
             .when(timeEntryRepository)
@@ -122,7 +134,7 @@ class TimeEntryControllerTest {
     }
 
     @Test
-    void testDelete() {
+    public void testDelete() {
         long timeEntryId = 1L;
         ResponseEntity response = controller.delete(timeEntryId);
         verify(timeEntryRepository).delete(timeEntryId);
